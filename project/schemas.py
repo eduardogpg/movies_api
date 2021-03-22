@@ -1,4 +1,5 @@
 from typing import Any
+
 from peewee import ModelSelect
 
 from pydantic import BaseModel
@@ -12,36 +13,45 @@ class PeeweeGetterDict(GetterDict):
         
         return res
 
-""" ------- User ------- """
 
-class UserBaseModel(BaseModel):
-    username: str
+class DatabaseBaseModel(BaseModel):
 
     class Config:
         orm_mode = True
         getter_dict = PeeweeGetterDict
+
+""" ------- User ------- """
+
+class UserBaseModel(DatabaseBaseModel):
+    username: str
 
 class UserRequestModel(UserBaseModel):
     password: str
 
 class UserResponseModel(UserBaseModel):
-    pass
+    id: int
 
-""" ------- Review ------- """
+""" ------- Movie ------- """
 
-class UserReviewBaseModel(BaseModel):
-    user_id: int
+class MovieBaseModel(DatabaseBaseModel):
+    id: int
+    title: str
 
-    class Config:
-        orm_mode = True
-        getter_dict = PeeweeGetterDict
+""" ------- User Review ------- """
 
-class UserReviewRequestModel(UserReviewBaseModel):
-    movie_id: int
+class UserReviewBaseModel(DatabaseBaseModel):
     review: str
     score: int
 
+class UserReviewRequestModel(UserReviewBaseModel):
+    user_id: int 
+    movie_id: int
+    
 class UserReviewResponseModel(UserReviewBaseModel):
-    id: int
+    review: str
+    score: int
+    movie: MovieBaseModel
 
-# NOW();
+class UserReviewUpdateRequestModel(UserReviewBaseModel):
+    review: str
+    score: int

@@ -21,6 +21,9 @@ class User(BaseModel):
     def create_password(cls, password):
         return password
 
+    def __str__(self):
+        return self.username
+
 class Movie(BaseModel):
     title = TextField()
 
@@ -30,12 +33,17 @@ class Movie(BaseModel):
 
 class UserReview(BaseModel):
     user = ForeignKeyField(User, backref='reviews')
-    movie = ForeignKeyField(Movie, backref='reviews')
+    movie = ForeignKeyField(Movie)
     review = TextField()
     score = IntegerField()
 
     class Meta:
         database = db
-        table_name = 'user_reviews'    
+        table_name = 'user_reviews' 
+
+    def __str__(self):
+        return self.review   
 
 # INSERT INTO movies (title, created_date) VALUES ('Five', NOW());
+
+user = User.select
