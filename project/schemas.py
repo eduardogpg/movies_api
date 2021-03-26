@@ -13,7 +13,6 @@ class PeeweeGetterDict(GetterDict):
         
         return res
 
-
 class DatabaseBaseModel(BaseModel):
 
     class Config:
